@@ -1,0 +1,89 @@
+<?xml version="1.0" standalone="no"?>
+
+<OPTIONS Product="Arposh Windows System Administration" Version="2.0.1" Author="Rich Prescott">
+
+ <Elevate Enabled="False" Comment="Allows script to be run with admin privileges"/>
+ <Domain Default="LDAP://DC=RU,DC=lab" Enabled="False"/>
+ <Search Comment="Properties to show when searching for computers. Property names are from ADSI Attribute Editor.">
+  <Property>DNSHostName</Property>
+  <Property>OperatingSystem</Property>
+  <Property>OperatingSystemVersion</Property>
+  <Property>WhenChanged</Property>
+ </Search>
+ <SystemInfo Comment="Information returned when querying System Info">
+  <General Enabled="True">
+   <ComputerName Enabled="True"/>
+   <DomainLocation Enabled="True"/>
+   <CurrentUser Enabled="True"/>
+   <LogonTime Enabled="True"/>
+   <ScreensaverTime Enabled="True"/>
+   <LastRestart Enabled="True"/>
+  </General>
+  <Build Enabled="True">
+   <Manufacturer Enabled="True"/>
+   <Model Enabled="True"/>
+   <Chassis Enabled="True"/>
+   <Serial Enabled="True"/>
+  </Build>
+  <Hardware Enabled="True">
+   <CPU Enabled="True"/>
+   <RAM Enabled="True"/>
+   <HD Enabled="True"/>
+   <OpticalDrive Enabled="True"/>
+   <GPU Enabled="True"/>
+   <Monitor Enabled="True"/>
+  </Hardware>
+  <OS Enabled="True">
+   <OS Enabled="True"/>
+   <ServicePack Enabled="True"/>
+   <Architecture Enabled="True"/>
+   <ImageDate Enabled="True"/>
+  </OS>
+  <IPConfig Enabled="True">
+   <Description Enabled="True"/>
+   <IPAddress Enabled="True"/>
+   <MACAddress Enabled="True"/>
+   <DHCPEnabled Enabled="False"/>
+   <DHCPServer Enabled="False"/>
+   <DNSDomain Enabled="False"/>
+  </IPConfig>
+  <AntiVirus Enabled="False" Comment="Only works on clients (Vista+)">
+   <Name Enabled="True"/>
+   <DefinitionStatus Enabled="True"/>
+   <RealTimeProtection Enabled="True"/>
+   <Executable Enabled="True"/>
+  </AntiVirus>
+ </SystemInfo>
+ <LocalAdmins>
+  <Property>Name</Property>
+  <Property>Domain</Property>
+  <Property>Class</Property>
+ </LocalAdmins>
+ <Applications>
+  <Property>Name</Property>
+  <Property>Vendor</Property>
+  <Property>Version</Property>
+  <Property>InstallDate</Property>
+ </Applications>
+ <StartupItems Comment="Unavailable on Windows XP">
+  <Property>Location</Property>
+  <Property>User</Property>
+  <Property>Caption</Property>
+  <Property>Command</Property>  
+ </StartupItems>
+ <Processes>
+  <Property>ProcessID</Property>
+  <Property>Name</Property>
+  <Property>ExecutablePath</Property>
+ </Processes>
+ <Services>
+  <Property>Name</Property>
+  <Property>DisplayName</Property>
+  <Property>State</Property>
+  <Property>StartMode</Property>
+ </Services>
+ <Websites>
+  <Website Name="Engineering Efficiency" URL="http://blog.richprescott.com"/>
+  <Website Name="@Rich_Prescott on Twitter" URL="http://www.twitter.com/Rich_Prescott"/>
+ </Websites>
+</OPTIONS>

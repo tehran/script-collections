@@ -1,0 +1,67 @@
+CLASS USER
+
+   CATEGORY "Keyboard Layout"
+
+     POLICY "Keyboard Layout switching"
+
+     KEYNAME "Software\Microsoft\Windows\CurrentVersion\Run"
+
+       VALUENAME "internat.exe"
+
+       VALUEON "internat.exe"
+
+       VALUEOFF DELETE
+
+       END POLICY
+
+     
+
+     POLICY "Keyboard layout"
+
+     KEYNAME "Keyboard Layout\Preload"
+
+         PART "Enable Azeri" CHECKBOX
+
+           DEFCHECKED
+
+          VALUENAME "1"
+
+           VALUEON "0000042c"
+
+           VALUEOFF DELETE
+
+         END PART
+
+ 
+
+         PART "Enable Russian" CHECKBOX
+
+           DEFCHECKED
+
+          VALUENAME "2"
+
+           VALUEON "00000419"
+
+           VALUEOFF DELETE
+
+         END PART
+		 
+		 
+         PART "Enable English" CHECKBOX
+
+           DEFCHECKED
+
+          VALUENAME "3"
+
+           VALUEON "00000409"
+
+           VALUEOFF DELETE
+
+         END PART
+		 	 
+
+ 
+
+         END POLICY
+
+END CATEGORY

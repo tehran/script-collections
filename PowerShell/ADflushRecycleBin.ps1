@@ -1,0 +1,1 @@
+Get-ADObject -Filter 'isDeleted -eq $true -and Name -like "*DEL:*"' -IncludeDeletedObjects | Remove-ADObject -Confirm:$false

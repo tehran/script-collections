@@ -1,0 +1,51 @@
+CLASS USER
+
+CATEGORY  !!HideDrives
+       
+KEYNAME Software\Microsoft\Windows\CurrentVersion\Policies\Explorer
+    POLICY !!HideDrives 
+    
+    PART !!HideDrivesDropdown    DROPDOWNLIST NOSORT REQUIRED
+    VALUENAME "NoDrives"
+    ITEMLIST
+        NAME !!ABOnly           VALUE NUMERIC    3
+        NAME !!COnly            VALUE NUMERIC    4
+        NAME !!DOnly            VALUE NUMERIC    8
+        NAME !!ABConly          VALUE NUMERIC    7
+        NAME !!ABCDOnly         VALUE NUMERIC    15
+        NAME !!HideACE          VALUE NUMERIC    21
+        NAME !!HideCE           VALUE NUMERIC    20
+        NAME !!HideCDE          VALUE NUMERIC    28
+        NAME !!HideACEF         VALUE NUMERIC    53
+        NAME !!HideCEF          VALUE NUMERIC    52
+		NAME !!HideEF          VALUE NUMERIC     48
+        NAME !!ALLDrives        VALUE NUMERIC    67108863 DEFAULT 
+        NAME !!RestNoDrives     VALUE NUMERIC    0
+    END ITEMLIST
+    END PART            
+    END POLICY
+
+      
+
+END CATEGORY;HideDrives
+
+[strings]
+Blank=" "
+ABCDOnly="Restrict A, B, C and D drives only"
+ABConly="Restrict A, B and C drives only"
+ABOnly="Restrict A and B drives only"
+ALLDrives="Restrict all drives"
+COnly="Restrict C drive only"
+DOnly="Restrict D drive only"
+HideACEF="Restrict A,C,E and F drives only"
+HideCDE="Restrict C, D and E drives only"
+HideACE="Restrict A, C and E drives only"
+HideCE="Restrict C and E drives only"
+HideCEF="Restrict C, E and F drives only"
+HideEF="Restrict E and F drives only"
+HideDrives="Hide Drives"
+HideDrivesDropdown="Hide Drives Selection"
+MoveProfile="Move Profiles"
+MoveProfileDropdown="Move User Profile Location"
+MOVEPROFILETOD="Move Profile to D Drive"
+RestNoDrives="Restore Drives"

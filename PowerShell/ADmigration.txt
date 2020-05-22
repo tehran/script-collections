@@ -1,0 +1,11 @@
+ntdsutil
+ntdsutil: role
+fsmo maintenance: connections
+server connections: connect to server SERVERNAME
+server connections: quit
+fsmo maintenance: seize schema master
+fsmo maintenance: seize naming master
+fsmo maintenance: seize RID master
+fsmo maintenance: seize PDC
+fsmo maintenance: seize infrastructure master 
+quit

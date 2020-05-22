@@ -1,0 +1,1 @@
+This script has been moved to a new project repo - https://github.com/nickrod518/MapDrivesUtility
