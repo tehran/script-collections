@@ -1,0 +1,1 @@
+﻿.\bf.ps1 2>&1 | tee -filePath C:\Users\Administrator\Desktop\results.txt
