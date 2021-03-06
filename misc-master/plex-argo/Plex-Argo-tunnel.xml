@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-16"?>
+<Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
+  <RegistrationInfo>
+    <Date>2020-03-30T00:00:00</Date>
+    <Author>github.com/danielewood</Author>
+    <Description>Starts cloudflared with a free trycloudflare.com Argo Tunnel (no CloudFlare Account needed)
+
+You can replace localhost:32400 with your Computer_IP_Address:32400 so that Plex detects the traffic as "external" for bandwith monitoring purposes.
+
+When you import this XML into Task Scheduler, you will need to change the AtLogon User to the account which Plex runs under.
+
+Change `C:\PATH\TO\CLOUDFLARED\cloudflared.exe` to the path where you stored the [cloudflared.exe Application](https://developers.cloudflare.com/argo-tunnel/downloads/) prior to importing the XML.</Description>
+    <URI>\Plex-Argo-tunnel</URI>
+  </RegistrationInfo>
+  <Triggers>
+    <LogonTrigger>
+      <Repetition>
+        <Interval>PT5M</Interval>
+        <StopAtDurationEnd>false</StopAtDurationEnd>
+      </Repetition>
+      <Enabled>true</Enabled>
+      <UserId>CHANGE_THIS_TO_YOUR_SAMACCOUNTNAME</UserId>
+      <Delay>PT1M</Delay>
+    </LogonTrigger>
+  </Triggers>
+  <Principals>
+    <Principal id="Author">
+      <LogonType>InteractiveToken</LogonType>
+      <RunLevel>LeastPrivilege</RunLevel>
+    </Principal>
+  </Principals>
+  <Settings>
+    <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>
+    <DisallowStartIfOnBatteries>true</DisallowStartIfOnBatteries>
+    <StopIfGoingOnBatteries>true</StopIfGoingOnBatteries>
+    <AllowHardTerminate>true</AllowHardTerminate>
+    <StartWhenAvailable>false</StartWhenAvailable>
+    <RunOnlyIfNetworkAvailable>false</RunOnlyIfNetworkAvailable>
+    <IdleSettings>
+      <StopOnIdleEnd>true</StopOnIdleEnd>
+      <RestartOnIdle>false</RestartOnIdle>
+    </IdleSettings>
+    <AllowStartOnDemand>true</AllowStartOnDemand>
+    <Enabled>true</Enabled>
+    <Hidden>false</Hidden>
+    <RunOnlyIfIdle>false</RunOnlyIfIdle>
+    <WakeToRun>false</WakeToRun>
+    <ExecutionTimeLimit>PT0S</ExecutionTimeLimit>
+    <Priority>7</Priority>
+  </Settings>
+  <Actions Context="Author">
+    <Exec>
+      <Command>Powershell.exe</Command>
+      <Arguments>-WindowStyle Hidden Invoke-Command -ScriptBlock { &amp; 'C:\PATH\TO\CLOUDFLARED\cloudflared.exe' tunnel --url 'http://localhost:32400' --metrics 'localhost:33400'}</Arguments>
+    </Exec>
+  </Actions>
+</Task>

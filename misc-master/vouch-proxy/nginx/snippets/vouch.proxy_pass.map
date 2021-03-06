@@ -1,0 +1,3 @@
+sonarr.YOUR.DOMAIN http://127.0.0.1:8989;
+radarr.YOUR.DOMAIN http://127.0.0.1:7878;
+qbittorrent.YOUR.DOMAIN http://127.0.0.1:7879;
