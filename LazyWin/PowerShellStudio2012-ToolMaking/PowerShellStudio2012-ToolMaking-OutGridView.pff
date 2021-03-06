@@ -1,0 +1,212 @@
+﻿
+  <FileID>e6b2ce39-60ae-4f17-8b0f-57f56e0615c7</FileID>
+  <LastExport>130259973698795239</LastExport>
+  <FileVersion>1.2</FileVersion>
+  <Object type="System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" name="formLazyWinAdmincom" children="Controls">
+    <Property name="ClientSize">265, 67</Property>
+    <Property name="Name">formLazyWinAdmincom</Property>
+    <Property name="Text">LazyWinAdmin.com</Property>
+    <Event name="Load">formLazyWinAdmincom_Load</Event>
+    <Object type="System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" name="textboxComputerName" children="Controls">
+      <Property name="Location">12, 12</Property>
+      <Property name="Name">textboxComputerName</Property>
+      <Property name="Size">100, 20</Property>
+      <Property name="TabIndex">4</Property>
+    </Object>
+    <Object type="System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" name="buttonServices" children="Controls">
+      <Property name="Location">12, 38</Property>
+      <Property name="Name">buttonServices</Property>
+      <Property name="Size">75, 23</Property>
+      <Property name="TabIndex">3</Property>
+      <Property name="Text">Services</Property>
+      <Property name="UseVisualStyleBackColor">True</Property>
+      <Event name="Click">buttonServices_Click</Event>
+    </Object>
+    <Object type="System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" name="buttonProcesses" children="Controls">
+      <Property name="Location">93, 38</Property>
+      <Property name="Name">buttonProcesses</Property>
+      <Property name="Size">75, 23</Property>
+      <Property name="TabIndex">2</Property>
+      <Property name="Text">Processes</Property>
+      <Property name="UseVisualStyleBackColor">True</Property>
+      <Event name="Click">buttonProcesses_Click</Event>
+    </Object>
+    <Object type="System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" name="buttonShares" children="Controls">
+      <Property name="Location">174, 38</Property>
+      <Property name="Name">buttonShares</Property>
+      <Property name="Size">75, 23</Property>
+      <Property name="TabIndex">1</Property>
+      <Property name="Text">Shares</Property>
+      <Property name="UseVisualStyleBackColor">True</Property>
+      <Event name="Click">buttonShares_Click</Event>
+    </Object>
+    <Object type="System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" name="buttonCredential" children="Controls">
+      <Property name="Location">118, 9</Property>
+      <Property name="Name">buttonCredential</Property>
+      <Property name="Size">67, 23</Property>
+      <Property name="TabIndex">0</Property>
+      <Property name="Text">Credential</Property>
+      <Property name="UseVisualStyleBackColor">True</Property>
+      <Event name="Click">buttonCredential_Click</Event>
+    </Object>
+  </Object>
+  <Code><![CDATA[
+
+function OnApplicationLoad {
+	#Note: This function is not called in Projects
+	#Note: This function runs before the form is created
+	#Note: To get the script directory in the Packager use: Split-Path $hostinvocation.MyCommand.path
+	#Note: To get the console output in the Packager (Windows Mode) use: $ConsoleOutput (Type: System.Collections.ArrayList)
+	#Important: Form controls cannot be accessed in this function
+	#TODO: Add snapins and custom code to validate the application load
+	
+	return $true #return true for success or false for failure
+}
+
+
+function OnApplicationExit {
+	#Note: This function is not called in Projects
+	#Note: This function runs after the form is closed
+	#TODO: Add custom code to clean up and unload snapins when the application exits
+	
+	$script:ExitCode = 0 #Set the exit code for the Packager
+}
+
+$formLazyWinAdmincom_Load={
+	#TODO: Initialize Form Controls here
+	
+}
+
+$buttonCredential_Click={
+	# Ask for Credential
+	$global:cred = Get-Credential -Credential 'FX\Administrator'
+}
+
+$buttonServices_Click={
+	# Query the Services on the computername specified in the textbox
+	Get-WmiObject Win32_Service -ComputerName $textboxComputerName.Text -Credential $cred | Select-Object __Server,Name | Out-GridView
+}
+
+$buttonProcesses_Click={
+	# Query the Processes on the computername specified in the textbox
+	Get-WmiObject Win32_Process -ComputerName $textboxComputerName.Text -Credential $cred | Select-Object __Server,Name | Out-GridView
+}
+
+$buttonShares_Click={
+	# Query the Shares on the computername specified in the textbox
+	Get-WmiObject Win32_Share -ComputerName $textboxComputerName.Text -Credential $cred | Select-Object __Server,Name | Out-GridView
+}
+#region Control Helper Functions
+function Load-DataGridView
+{
+	<#
+	.SYNOPSIS
+		This functions helps you load items into a DataGridView.
+
+	.DESCRIPTION
+		Use this function to dynamically load items into the DataGridView control.
+
+	.PARAMETER  DataGridView
+		The ComboBox control you want to add items to.
+
+	.PARAMETER  Item
+		The object or objects you wish to load into the ComboBox's items collection.
+	
+	.PARAMETER  DataMember
+		Sets the name of the list or table in the data source for which the DataGridView is displaying data.
+
+	#>
+	Param (
+		[ValidateNotNull()]
+		[Parameter(Mandatory=$true)]
+		[System.Windows.Forms.DataGridView]$DataGridView,
+		[ValidateNotNull()]
+		[Parameter(Mandatory=$true)]
+		$Item,
+	    [Parameter(Mandatory=$false)]
+		[string]$DataMember
+	)
+	$DataGridView.SuspendLayout()
+	$DataGridView.DataMember = $DataMember
+	
+	if ($Item -is [System.ComponentModel.IListSource]`
+	-or $Item -is [System.ComponentModel.IBindingList] -or $Item -is [System.ComponentModel.IBindingListView] )
+	{
+		$DataGridView.DataSource = $Item
+	}
+	else
+	{
+		$array = New-Object System.Collections.ArrayList
+		
+		if ($Item -is [System.Collections.IList])
+		{
+			$array.AddRange($Item)
+		}
+		else
+		{	
+			$array.Add($Item)	
+		}
+		$DataGridView.DataSource = $array
+	}
+	
+	$DataGridView.ResumeLayout()
+}
+#endregion
+]]></Code>
+  <Mode>1</Mode>
+  <Assemblies>
+    <Assembly>System.Management.Automation, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</Assembly>
+    <Assembly>mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</Assembly>
+    <Assembly>System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</Assembly>
+    <Assembly>System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</Assembly>
+    <Assembly>System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</Assembly>
+    <Assembly>System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</Assembly>
+    <Assembly>System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</Assembly>
+    <Assembly>System.DirectoryServices, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</Assembly>
+    <Assembly>System.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</Assembly>
+    <Assembly>System.ServiceProcess, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</Assembly>
+  </Assemblies>
+  <Packager>
+    <General>
+      <PackageName>
+      </PackageName>
+      <PackageIcon>
+      </PackageIcon>
+      <ManifestCreation>1</ManifestCreation>
+      <CustomManifest>
+      </CustomManifest>
+      <Platform>-1</Platform>
+      <RunSTA>0</RunSTA>
+      <PowerShellVersion>2</PowerShellVersion>
+    </General>
+    <Security>
+      <Username>
+      </Username>
+      <Password>
+      </Password>
+      <SignPackage>False</SignPackage>
+      <Certificate>
+      </Certificate>
+      <CertificatePassword>
+      </CertificatePassword>
+      <RunAs>0</RunAs>
+    </Security>
+    <Version>
+      <FileVersion>1.0.0.0</FileVersion>
+      <ProductVersion>1.0.0.0</ProductVersion>
+      <ProductName>
+      </ProductName>
+      <Description>
+      </Description>
+      <Company>
+      </Company>
+      <Copyright>
+      </Copyright>
+      <InternalName>
+      </InternalName>
+      <OriginalFileName>
+      </OriginalFileName>
+      <Comment>
+      </Comment>
+    </Version>
+  </Packager>
